@@ -1,0 +1,229 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #111827;
+  --bg-card: #1a1f36;
+  --bg-card-hover: #232946;
+  --border-color: #2a3154;
+  --accent-blue: #3b82f6;
+  --accent-cyan: #06b6d4;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+  --accent-violet: #8b5cf6;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --gradient-blue: linear-gradient(135deg, #3b82f6, #06b6d4);
+  --gradient-emerald: linear-gradient(135deg, #10b981, #34d399);
+  --gradient-amber: linear-gradient(135deg, #f59e0b, #fbbf24);
+  --gradient-rose: linear-gradient(135deg, #f43f5e, #fb7185);
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* Glass Card */
+.glass-card {
+  background: rgba(26, 31, 54, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+.glass-card:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.05);
+}
+
+/* KPI Card */
+.kpi-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 20px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 16px 16px 0 0;
+}
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+.kpi-card.blue::before { background: var(--gradient-blue); }
+.kpi-card.emerald::before { background: var(--gradient-emerald); }
+.kpi-card.amber::before { background: var(--gradient-amber); }
+.kpi-card.rose::before { background: var(--gradient-rose); }
+
+/* Sidebar */
+.sidebar {
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-color);
+  width: 260px;
+  min-height: 100vh;
+  transition: width 0.3s ease;
+}
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+}
+.sidebar-link:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--text-primary);
+}
+.sidebar-link.active {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--accent-blue);
+}
+
+/* Data Table */
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.data-table thead th {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 16px;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid var(--border-color);
+}
+.data-table tbody tr {
+  transition: background 0.15s ease;
+}
+.data-table tbody tr:hover {
+  background: rgba(59, 130, 246, 0.05);
+}
+.data-table tbody td {
+  padding: 10px 16px;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(42, 49, 84, 0.5);
+  color: var(--text-primary);
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.badge-success { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+.badge-warning { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+.badge-danger { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+.badge-info { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.4s ease forwards; }
+.fade-in-delay-1 { animation-delay: 0.1s; opacity: 0; }
+.fade-in-delay-2 { animation-delay: 0.2s; opacity: 0; }
+.fade-in-delay-3 { animation-delay: 0.3s; opacity: 0; }
+.fade-in-delay-4 { animation-delay: 0.4s; opacity: 0; }
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.2); }
+  50% { box-shadow: 0 0 20px 5px rgba(59, 130, 246, 0.1); }
+}
+
+/* Select & Input */
+.form-select, .form-input {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--text-primary);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.form-select:focus, .form-input:focus {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+/* Stat pill */
+.stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.stat-pill.up { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+.stat-pill.down { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+.stat-pill.neutral { background: rgba(100, 116, 139, 0.15); color: #94a3b8; }
+
+/* Loading skeleton */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-card) 25%, rgba(42, 49, 84, 0.8) 50%, var(--bg-card) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
