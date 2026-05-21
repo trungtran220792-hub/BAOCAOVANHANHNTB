@@ -24,10 +24,21 @@ export const SHEET_NAMES = {
 // ─── Auth ──────────────────────────────────────────────────────────────────────
 
 function getAuth() {
+  // 1. Check for Environment Variables (Vercel)
+  if (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL && process.env.GOOGLE_PRIVATE_KEY) {
+    return new google.auth.GoogleAuth({
+      credentials: {
+        client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+        private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      },
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
+  }
+
+  // 2. Fallback to local credentials.json
   if (!fs.existsSync(CREDENTIALS_PATH)) {
     throw new Error(
-      `credentials.json not found at ${CREDENTIALS_PATH}. ` +
-      'Please place your Google Service Account JSON file there.'
+      `Environment variables missing and credentials.json not found at ${CREDENTIALS_PATH}.`
     );
   }
 
@@ -215,6 +226,9 @@ async function formatHeaderRow(sheets: ReturnType<typeof google.sheets>, sheetNa
 // ─── Check credentials availability ───────────────────────────────────────────
 
 export function hasCredentials(): boolean {
+  if (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL && process.env.GOOGLE_PRIVATE_KEY) {
+    return true;
+  }
   return fs.existsSync(CREDENTIALS_PATH);
 }
 
