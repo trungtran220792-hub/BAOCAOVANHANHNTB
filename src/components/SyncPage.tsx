@@ -6,6 +6,7 @@ import {
   Calendar, Lock, Eye, EyeOff, ExternalLink, Info,
   Upload, Database, Wifi, WifiOff
 } from 'lucide-react';
+import { useData } from '@/lib/data-store';
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -30,6 +31,7 @@ type SyncState = 'idle' | 'running' | 'success' | 'error';
 // ─── Component ─────────────────────────────────────────────────────────────────
 
 export default function SyncPage() {
+  const { fetchDataFromBackend } = useData();
   // Status
   const [status, setStatus] = useState<SyncStatus | null>(null);
   const [loadingStatus, setLoadingStatus] = useState(true);
@@ -94,6 +96,8 @@ export default function SyncPage() {
       if (data.success) {
         log(`✓ Scrape thành công: ${data.scrapedRows?.toLocaleString()} dòng`);
         log(`✓ Đã ghi ${data.writtenRows?.toLocaleString()} dòng vào Google Sheets`);
+        log('✓ Đang đồng bộ dữ liệu về Dashboard...');
+        await fetchDataFromBackend();
         log('✓ Hoàn tất!');
         setOpsSyncState('success');
       } else {
@@ -131,6 +135,9 @@ export default function SyncPage() {
       });
       const data: SyncResult = await res.json();
       setHrResult(data);
+      if (data.success) {
+        await fetchDataFromBackend();
+      }
       setHrSyncState(data.success ? 'success' : 'error');
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);

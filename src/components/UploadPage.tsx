@@ -5,31 +5,43 @@ import { useData } from '@/lib/data-store';
 import { Upload, FileSpreadsheet, CheckCircle2, AlertCircle, X, Database } from 'lucide-react';
 
 export default function UploadPage() {
-  const { loadOpsData, loadHrData, loadHistoricalData, opsData, hrData, historicalData, isLoading, error } = useData();
+  const { fetchDataFromBackend, opsData, hrData, historicalData, isLoading, error } = useData();
   const [dragOverOps, setDragOverOps] = useState(false);
   const [dragOverHr, setDragOverHr] = useState(false);
   const [dragOverHist, setDragOverHist] = useState(false);
   const [opsFile, setOpsFile] = useState<string | null>(null);
   const [hrFile, setHrFile] = useState<string | null>(null);
   const [histFile, setHistFile] = useState<string | null>(null);
+  const [uploadingState, setUploadingState] = useState<string | null>(null);
 
   const handleFile = useCallback((file: File, type: 'ops' | 'hr' | 'hist') => {
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       const text = e.target?.result as string;
-      if (type === 'ops') {
-        loadOpsData(text);
-        setOpsFile(file.name);
-      } else if (type === 'hr') {
-        loadHrData(text);
-        setHrFile(file.name);
-      } else if (type === 'hist') {
-        loadHistoricalData(text);
-        setHistFile(file.name);
+      setUploadingState(type);
+      try {
+        const endpoint = type === 'ops' ? '/api/sync-ops-csv' : type === 'hr' ? '/api/sync-hr' : '/api/sync-historical';
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ csvText: text })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+
+        if (type === 'ops') setOpsFile(file.name);
+        else if (type === 'hr') setHrFile(file.name);
+        else if (type === 'hist') setHistFile(file.name);
+
+        await fetchDataFromBackend();
+      } catch (err) {
+        alert('Lỗi tải lên: ' + (err instanceof Error ? err.message : String(err)));
+      } finally {
+        setUploadingState(null);
       }
     };
     reader.readAsText(file, 'utf-8');
-  }, [loadOpsData, loadHrData, loadHistoricalData]);
+  }, [fetchDataFromBackend]);
 
   const handleDrop = useCallback((e: React.DragEvent, type: 'ops' | 'hr' | 'hist') => {
     e.preventDefault();
@@ -73,7 +85,9 @@ export default function UploadPage() {
           <input id="ops-input" type="file" accept=".csv" className="hidden" onChange={e => handleInput(e, 'ops')} />
           <div className="w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center"
             style={{ background: opsData.length > 0 ? 'rgba(16,185,129,0.1)' : 'rgba(59,130,246,0.1)' }}>
-            {opsData.length > 0 ? (
+            {uploadingState === 'ops' ? (
+              <div className="w-7 h-7 border-2 border-t-transparent border-[var(--accent-blue)] rounded-full animate-spin" />
+            ) : opsData.length > 0 ? (
               <CheckCircle2 className="w-7 h-7 text-emerald-400" />
             ) : (
               <FileSpreadsheet className="w-7 h-7 text-[var(--accent-blue)]" />
@@ -81,7 +95,9 @@ export default function UploadPage() {
           </div>
           <h3 className="font-semibold text-sm mb-1">📊 Dữ Liệu Vận Hành</h3>
           <p className="text-xs text-[var(--text-muted)] mb-3">Báo cáo xử lý thành công trong ngày</p>
-          {opsData.length > 0 ? (
+          {uploadingState === 'ops' ? (
+             <p className="text-xs text-[var(--accent-blue)]">Đang đẩy lên server...</p>
+          ) : opsData.length > 0 ? (
             <div className="space-y-1">
               <p className="text-xs text-emerald-400 font-medium">✓ {opsFile}</p>
               <p className="text-[10px] text-[var(--text-muted)]">{opsData.length.toLocaleString()} records loaded</p>
@@ -102,7 +118,9 @@ export default function UploadPage() {
           <input id="hr-input" type="file" accept=".csv" className="hidden" onChange={e => handleInput(e, 'hr')} />
           <div className="w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center"
             style={{ background: hrData.length > 0 ? 'rgba(16,185,129,0.1)' : 'rgba(6,182,212,0.1)' }}>
-            {hrData.length > 0 ? (
+            {uploadingState === 'hr' ? (
+              <div className="w-7 h-7 border-2 border-t-transparent border-[var(--accent-cyan)] rounded-full animate-spin" />
+            ) : hrData.length > 0 ? (
               <CheckCircle2 className="w-7 h-7 text-emerald-400" />
             ) : (
               <Database className="w-7 h-7 text-[var(--accent-cyan)]" />
@@ -110,7 +128,9 @@ export default function UploadPage() {
           </div>
           <h3 className="font-semibold text-sm mb-1">👥 Dữ Liệu Nhân Sự</h3>
           <p className="text-xs text-[var(--text-muted)] mb-3">Tổng quan nhân sự vùng NTB</p>
-          {hrData.length > 0 ? (
+          {uploadingState === 'hr' ? (
+             <p className="text-xs text-[var(--accent-cyan)]">Đang đẩy lên server...</p>
+          ) : hrData.length > 0 ? (
             <div className="space-y-1">
               <p className="text-xs text-emerald-400 font-medium">✓ {hrFile}</p>
               <p className="text-[10px] text-[var(--text-muted)]">{hrData.length.toLocaleString()} records loaded</p>
@@ -131,7 +151,9 @@ export default function UploadPage() {
           <input id="hist-input" type="file" accept=".csv" className="hidden" onChange={e => handleInput(e, 'hist')} />
           <div className="w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center"
             style={{ background: historicalData.length > 0 ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)' }}>
-            {historicalData.length > 0 ? (
+            {uploadingState === 'hist' ? (
+              <div className="w-7 h-7 border-2 border-t-transparent border-[var(--accent-amber)] rounded-full animate-spin" />
+            ) : historicalData.length > 0 ? (
               <CheckCircle2 className="w-7 h-7 text-emerald-400" />
             ) : (
               <FileSpreadsheet className="w-7 h-7 text-[var(--accent-amber)]" />
@@ -139,7 +161,9 @@ export default function UploadPage() {
           </div>
           <h3 className="font-semibold text-sm mb-1">📅 Dữ Liệu Lịch Sử</h3>
           <p className="text-xs text-[var(--text-muted)] mb-3">Dữ liệu sản lượng tháng năm cũ</p>
-          {historicalData.length > 0 ? (
+          {uploadingState === 'hist' ? (
+             <p className="text-xs text-[var(--accent-amber)]">Đang đẩy lên server...</p>
+          ) : historicalData.length > 0 ? (
             <div className="space-y-1">
               <p className="text-xs text-emerald-400 font-medium">✓ {histFile}</p>
               <p className="text-[10px] text-[var(--text-muted)]">{historicalData.length.toLocaleString()} records loaded</p>

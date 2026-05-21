@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import type { OperationsRecord, WorkforceRecord, HistoricalDataRecord } from '@/types';
 import { parseOperationsCSV, parseWorkforceCSV, parseHistoricalCSV } from '@/lib/data-utils';
 
@@ -13,6 +13,7 @@ interface DataStore {
   loadOpsData: (csvText: string) => void;
   loadHrData: (csvText: string) => void;
   loadHistoricalData: (csvText: string) => void;
+  fetchDataFromBackend: () => Promise<void>;
   isAuthenticated: boolean;
   currentUser: { id: string; name: string; role: string } | null;
   login: (employeeId: string) => boolean;
@@ -29,6 +30,31 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState<{ id: string; name: string; role: string } | null>(null);
+
+  const fetchDataFromBackend = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/fetch-data');
+      if (!res.ok) throw new Error('API request failed');
+      const json = await res.json();
+      if (!json.success) throw new Error(json.error || 'Failed to fetch data');
+      
+      if (json.data.opsCSV) setOpsData(parseOperationsCSV(json.data.opsCSV));
+      if (json.data.hrCSV) setHrData(parseWorkforceCSV(json.data.hrCSV));
+      if (json.data.historicalCSV) setHistoricalData(parseHistoricalCSV(json.data.historicalCSV));
+    } catch (e) {
+      console.error('Fetch data error:', e);
+      setError(e instanceof Error ? e.message : 'Lỗi lấy dữ liệu từ Google Sheets');
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchDataFromBackend();
+  }, [fetchDataFromBackend]);
+
 
   const loadOpsData = useCallback((csvText: string) => {
     setIsLoading(true);
@@ -103,7 +129,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
   return (
     <DataContext.Provider value={{ 
       opsData, hrData, historicalData, isLoading, error, 
-      loadOpsData, loadHrData, loadHistoricalData, 
+      loadOpsData, loadHrData, loadHistoricalData, fetchDataFromBackend,
       isAuthenticated, currentUser, login, logout 
     }}>
       {children}

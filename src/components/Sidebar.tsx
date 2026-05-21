@@ -19,10 +19,18 @@ const navItems = [
 
 export default function Sidebar({ activePage, onPageChange }: SidebarProps) {
   const { currentUser, logout, opsData } = useData();
-  const [collapsed, setCollapsed] = useState(false);
+  const [isPinned, setIsPinned] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  
+  const collapsed = !isPinned && !isHovered;
 
   return (
-    <aside className={`sidebar flex flex-col ${collapsed ? 'w-[72px]' : 'w-[260px]'}`} style={{ transition: 'width 0.3s ease' }}>
+    <aside 
+      className={`sidebar flex flex-col z-50 ${collapsed ? 'w-[72px]' : 'w-[260px]'}`} 
+      style={{ transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       {/* Header */}
       <div className="p-4 flex items-center gap-3 border-b border-[var(--border-color)]">
         <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
@@ -35,8 +43,12 @@ export default function Sidebar({ activePage, onPageChange }: SidebarProps) {
             <p className="text-[10px] text-[var(--text-muted)]">Command Center</p>
           </div>
         )}
-        <button onClick={() => setCollapsed(!collapsed)} className="ml-auto p-1.5 rounded-lg hover:bg-[var(--bg-card)] transition-colors">
-          {collapsed ? <ChevronRight className="w-4 h-4 text-[var(--text-muted)]" /> : <X className="w-4 h-4 text-[var(--text-muted)]" />}
+        <button 
+          onClick={() => setIsPinned(!isPinned)} 
+          className="ml-auto p-1.5 rounded-lg hover:bg-[var(--bg-card)] transition-colors opacity-0 hover:opacity-100 group-hover:opacity-100"
+          style={{ opacity: !collapsed ? 1 : 0 }}
+        >
+          {isPinned ? <X className="w-4 h-4 text-[var(--text-muted)]" /> : <ChevronRight className="w-4 h-4 text-[var(--text-muted)]" />}
         </button>
       </div>
 
