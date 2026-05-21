@@ -132,7 +132,7 @@ export default function HRPage() {
     <div className="space-y-6 fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-white">Quản Lý Nhân Sự</h1>
+          <h1 className="text-xl font-bold text-[var(--accent-blue)]">Quản Lý Nhân Sự</h1>
           <p className="text-xs text-[var(--text-muted)] mt-1">{hrData.length} nhân viên • {stations.length} bưu cục</p>
         </div>
       </div>
@@ -141,15 +141,15 @@ export default function HRPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="kpi-card emerald">
           <p className="text-xs text-[var(--text-muted)]">Đang làm việc</p>
-          <p className="text-2xl font-bold text-white mt-1">{hrData.filter(h => !h.endDate || h.status === 'Đang làm việc').length}</p>
+          <p className="text-2xl font-bold text-[var(--text-primary)] mt-1">{hrData.filter(h => !h.endDate || h.status === 'Đang làm việc').length}</p>
         </div>
         <div className="kpi-card rose">
           <p className="text-xs text-[var(--text-muted)]">Đã nghỉ</p>
-          <p className="text-2xl font-bold text-white mt-1">{hrData.filter(h => h.endDate && h.status !== 'Đang làm việc').length}</p>
+          <p className="text-2xl font-bold text-[var(--text-primary)] mt-1">{hrData.filter(h => h.endDate && h.status !== 'Đang làm việc').length}</p>
         </div>
         <div className="kpi-card blue">
           <p className="text-xs text-[var(--text-muted)]">Bưu cục</p>
-          <p className="text-2xl font-bold text-white mt-1">{stations.length}</p>
+          <p className="text-2xl font-bold text-[var(--text-primary)] mt-1">{stations.length}</p>
         </div>
         <div className="kpi-card amber">
           <p className="text-xs text-[var(--text-muted)]">Năng suất / Tăng trưởng</p>

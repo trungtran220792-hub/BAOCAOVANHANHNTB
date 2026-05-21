@@ -165,7 +165,7 @@ export default function SyncPage() {
 
       {/* Header */}
       <div>
-        <h1 className="text-xl font-bold text-white flex items-center gap-2">
+        <h1 className="text-xl font-bold text-[var(--accent-blue)] flex items-center gap-2">
           <Cloud className="w-5 h-5 text-[var(--accent-blue)]" />
           Đồng Bộ Dữ Liệu
         </h1>
@@ -218,11 +218,11 @@ export default function SyncPage() {
       {/* ── Section 1: Sync Ops Data ── */}
       <div className="glass-card overflow-hidden">
         <div className="px-5 py-4 border-b border-[var(--border-color)] flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[rgba(59,130,246,0.1)] flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-[rgba(242,101,34,0.1)] flex items-center justify-center">
             <RefreshCw className="w-4 h-4 text-[var(--accent-blue)]" />
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-white">Dữ Liệu Vận Hành (Tự động)</h2>
+            <h2 className="text-sm font-semibold text-[var(--text-primary)]">Dữ Liệu Vận Hành (Tự động)</h2>
             <p className="text-[11px] text-[var(--text-muted)]">Scrape từ baocao.ghn.vn → NangSuat_BuuCuc sheet</p>
           </div>
           <span className="ml-auto text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
@@ -262,7 +262,7 @@ export default function SyncPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(v => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-white transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -299,7 +299,7 @@ export default function SyncPage() {
                   <button
                     key={d}
                     onClick={() => setPreset(d)}
-                    className="text-[11px] px-2 py-1 rounded-md border border-[var(--border-color)] text-[var(--text-muted)] hover:text-white hover:border-[var(--accent-blue)] transition-colors"
+                    className="text-[11px] px-2 py-1 rounded-md border border-[var(--border-color)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--accent-blue)] transition-colors"
                   >
                     {d}N
                   </button>
@@ -316,7 +316,7 @@ export default function SyncPage() {
             className="w-full py-3 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
             style={{
               background: opsSyncState === 'running'
-                ? 'rgba(59,130,246,0.2)'
+                ? 'rgba(242,101,34,0.2)'
                 : 'linear-gradient(135deg, var(--accent-blue), #6366f1)',
               color: 'white',
             }}
@@ -391,7 +391,7 @@ export default function SyncPage() {
             <Database className="w-4 h-4 text-[var(--accent-cyan)]" />
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-white">Dữ Liệu Nhân Sự (Thủ công)</h2>
+            <h2 className="text-sm font-semibold text-[var(--text-primary)]">Dữ Liệu Nhân Sự (Thủ công)</h2>
             <p className="text-[11px] text-[var(--text-muted)]">Upload CSV → ghi vào NhanSu sheet (xóa cũ, ghi mới)</p>
           </div>
           <span className="ml-auto text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
@@ -433,7 +433,7 @@ export default function SyncPage() {
                   : <Upload className="w-6 h-6 text-[var(--accent-cyan)]" />
               }
             </div>
-            <p className="text-sm font-medium text-white">
+            <p className="text-sm font-medium text-[var(--text-primary)]">
               {hrFile ? hrFile : 'Kéo thả hoặc click để chọn CSV nhân sự'}
             </p>
             <p className="text-xs text-[var(--text-muted)] mt-1">
@@ -482,9 +482,9 @@ export default function SyncPage() {
       <div className="glass-card p-4 flex items-start gap-3 border border-blue-500/10">
         <Info className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
         <div className="text-xs text-[var(--text-muted)] space-y-1.5">
-          <p><span className="text-white font-medium">Quy trình ghi dữ liệu:</span> Hệ thống sẽ <span className="text-amber-400">xóa toàn bộ dữ liệu cũ</span> trong sheet rồi ghi mới. Đảm bảo khoảng thời gian đã chọn đúng trước khi sync.</p>
-          <p><span className="text-white font-medium">credentials.json:</span> Tạo Service Account tại Google Cloud Console → IAM &amp; Admin → Service Accounts → tải JSON → đặt vào thư mục gốc project và chia sẻ Editor quyền cho Service Account email vào Google Sheet.</p>
-          <p><span className="text-white font-medium">Thời gian scrape:</span> Tuỳ thuộc vào lượng dữ liệu, quá trình có thể mất 1-5 phút. Giữ cửa sổ trình duyệt mở.</p>
+          <p><span className="text-[var(--text-primary)] font-medium">Quy trình ghi dữ liệu:</span> Hệ thống sẽ <span className="text-amber-400">xóa toàn bộ dữ liệu cũ</span> trong sheet rồi ghi mới. Đảm bảo khoảng thời gian đã chọn đúng trước khi sync.</p>
+          <p><span className="text-[var(--text-primary)] font-medium">credentials.json:</span> Tạo Service Account tại Google Cloud Console → IAM &amp; Admin → Service Accounts → tải JSON → đặt vào thư mục gốc project và chia sẻ Editor quyền cho Service Account email vào Google Sheet.</p>
+          <p><span className="text-[var(--text-primary)] font-medium">Thời gian scrape:</span> Tuỳ thuộc vào lượng dữ liệu, quá trình có thể mất 1-5 phút. Giữ cửa sổ trình duyệt mở.</p>
         </div>
       </div>
     </div>

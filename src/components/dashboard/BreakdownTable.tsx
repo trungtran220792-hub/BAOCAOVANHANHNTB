@@ -39,7 +39,7 @@ export default function BreakdownTable({ data, title, icon }: BreakdownTableProp
   return (
     <div className="glass-card overflow-hidden">
       <button
-        className="w-full flex items-center justify-between px-5 py-4 hover:bg-[rgba(59,130,246,0.03)] transition-colors"
+        className="w-full flex items-center justify-between px-5 py-4 hover:bg-[rgba(242,101,34,0.03)] transition-colors"
         onClick={() => setExpanded(!expanded)}
       >
         <h3 className="text-sm font-semibold flex items-center gap-2">

@@ -26,13 +26,13 @@ export default function TopStations({ stations }: TopStationsProps) {
         <div className="flex gap-1 bg-[var(--bg-secondary)] rounded-lg p-0.5">
           <button
             onClick={() => setView('best')}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${view === 'best' ? 'bg-[var(--accent-emerald)] text-white shadow' : 'text-[var(--text-muted)] hover:text-white'}`}
+            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${view === 'best' ? 'bg-[var(--accent-emerald)] text-white shadow' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'}`}
           >
             <ArrowUp className="w-3 h-3 inline mr-1" />Tốt nhất
           </button>
           <button
             onClick={() => setView('worst')}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${view === 'worst' ? 'bg-[var(--accent-rose)] text-white shadow' : 'text-[var(--text-muted)] hover:text-white'}`}
+            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${view === 'worst' ? 'bg-[var(--accent-rose)] text-white shadow' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'}`}
           >
             <ArrowDown className="w-3 h-3 inline mr-1" />Cần cải thiện
           </button>
@@ -66,7 +66,7 @@ export default function TopStations({ stations }: TopStationsProps) {
                       {view === 'best' ? i + 1 : stations.length - 14 + i}
                     </span>
                   </td>
-                  <td className="font-medium text-white max-w-[200px] truncate" title={s.station}>{s.station}</td>
+                  <td className="font-medium text-[var(--text-primary)] max-w-[200px] truncate" title={s.station}>{s.station}</td>
                   <td className="text-[var(--text-secondary)]">{s.manager}</td>
                   <td className="text-right font-mono">{s.volume.toLocaleString('vi-VN')}</td>
                   <td className="text-right">

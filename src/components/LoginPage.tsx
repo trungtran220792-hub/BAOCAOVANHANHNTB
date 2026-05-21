@@ -45,10 +45,10 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center"
-            style={{ background: 'var(--gradient-blue)', boxShadow: '0 0 40px rgba(59,130,246,0.2)' }}>
+            style={{ background: 'var(--gradient-blue)', boxShadow: '0 0 40px rgba(242,101,34,0.2)' }}>
             <Zap className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-white mb-1">NTB Ops Dashboard</h1>
+          <h1 className="text-2xl font-bold text-[var(--accent-blue)] mb-1">NTB Ops Dashboard</h1>
           <p className="text-sm text-[var(--text-muted)]">Hệ thống quản lý vận hành khu vực Nam Trung Bộ</p>
         </div>
 

@@ -31,7 +31,7 @@ export default function Filters(props: FiltersProps) {
           <Filter className="w-3.5 h-3.5" /> Bộ lọc
         </h3>
         {hasFilters && (
-          <button onClick={props.onReset} className="text-xs text-[var(--accent-blue)] hover:text-white flex items-center gap-1 transition-colors">
+          <button onClick={props.onReset} className="text-xs text-[var(--accent-blue)] hover:text-[var(--text-primary)] flex items-center gap-1 transition-colors">
             <X className="w-3 h-3" /> Xóa lọc
           </button>
         )}
@@ -49,7 +49,7 @@ export default function Filters(props: FiltersProps) {
                 className={`flex-1 px-2 py-1.5 rounded-md text-[11px] font-medium transition-all ${
                   props.granularity === g
                     ? 'bg-[var(--accent-blue)] text-white shadow'
-                    : 'text-[var(--text-muted)] hover:text-white'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                 }`}
               >
                 {g === 'day' ? 'Ngày' : g === 'week' ? 'Tuần' : 'Tháng'}

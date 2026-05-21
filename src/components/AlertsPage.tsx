@@ -139,7 +139,7 @@ export default function AlertsPage() {
   return (
     <div className="space-y-6 fade-in">
       <div>
-        <h1 className="text-xl font-bold text-white">Cảnh Báo & Telegram</h1>
+        <h1 className="text-xl font-bold text-[var(--accent-blue)]">Cảnh Báo & Telegram</h1>
         <p className="text-xs text-[var(--text-muted)] mt-1">Giám sát tự động & gửi thông báo</p>
       </div>
 
@@ -155,7 +155,7 @@ export default function AlertsPage() {
         </div>
         <div className="kpi-card blue">
           <p className="text-xs text-[var(--text-muted)]">Tổng cảnh báo</p>
-          <p className="text-2xl font-bold text-white mt-1">{alerts.length}</p>
+          <p className="text-2xl font-bold text-[var(--text-primary)] mt-1">{alerts.length}</p>
         </div>
       </div>
 
@@ -227,7 +227,7 @@ export default function AlertsPage() {
         ) : (
           <div className="divide-y divide-[var(--border-color)] max-h-[500px] overflow-y-auto">
             {alerts.map(alert => (
-              <div key={alert.id} className="px-5 py-3 flex items-start gap-3 hover:bg-[rgba(59,130,246,0.03)] transition-colors">
+              <div key={alert.id} className="px-5 py-3 flex items-start gap-3 hover:bg-[rgba(242,101,34,0.03)] transition-colors">
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${
                   alert.severity === 'critical' ? 'bg-rose-500/10' : 'bg-amber-500/10'
                 }`}>

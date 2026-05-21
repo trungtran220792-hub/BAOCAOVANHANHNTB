@@ -63,7 +63,7 @@ export default function DashboardPage() {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-white">Dashboard Vận Hành</h1>
+          <h1 className="text-xl font-bold text-[var(--accent-blue)]">Dashboard Vận Hành</h1>
           <p className="text-xs text-[var(--text-muted)] mt-1">
             Khu vực NTB • {filteredData.length.toLocaleString()} records
             {manager !== 'all' && ` • ${manager}`}

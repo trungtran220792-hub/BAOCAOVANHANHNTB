@@ -19,7 +19,7 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
             <span className="w-2 h-2 rounded-full" style={{ background: p.color }} />
             <span className="text-[var(--text-secondary)]">{p.name}</span>
           </span>
-          <span className="font-medium text-white">{typeof p.value === 'number' ? (p.name.includes('%') || p.name.includes('GTC') || p.name.includes('Gán') ? `${p.value.toFixed(1)}%` : p.value.toLocaleString('vi-VN')) : p.value}</span>
+          <span className="font-medium text-[var(--text-primary)]">{typeof p.value === 'number' ? (p.name.includes('%') || p.name.includes('GTC') || p.name.includes('Gán') ? `${p.value.toFixed(1)}%` : p.value.toLocaleString('vi-VN')) : p.value}</span>
         </div>
       ))}
     </div>

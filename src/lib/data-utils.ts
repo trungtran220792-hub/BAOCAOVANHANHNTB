@@ -325,7 +325,6 @@ export function rankStations(records: OperationsRecord[]): StationRanking[] {
     .map((s, i) => ({ ...s, rank: i + 1 }));
 }
 
-// Filter operations records
 export function filterRecords(
   records: OperationsRecord[],
   filters: {
@@ -338,13 +337,11 @@ export function filterRecords(
   }
 ): OperationsRecord[] {
   return records.filter(r => {
-    if (filters.dateStart) {
-      const start = new Date(filters.dateStart);
-      if (r.dateObj < start) return false;
-    }
-    if (filters.dateEnd) {
-      const end = new Date(filters.dateEnd);
-      if (r.dateObj > end) return false;
+    if (filters.dateStart || filters.dateEnd) {
+      // Use string comparison on YYYY-MM-DD format to avoid timezone offset bugs
+      const rowDate = r.date ? r.date.split(' - ')[0].trim() : '';
+      if (filters.dateStart && rowDate < filters.dateStart) return false;
+      if (filters.dateEnd && rowDate > filters.dateEnd) return false;
     }
     if (filters.manager && filters.manager !== 'all' && r.manager !== filters.manager) return false;
     if (filters.station && filters.station !== 'all' && r.station !== filters.station) return false;

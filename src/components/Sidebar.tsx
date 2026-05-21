@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useData } from '@/lib/data-store';
-import { LayoutDashboard, Users, Bell, LogOut, Upload, X, ChevronRight, Zap, Cloud } from 'lucide-react';
+import { LayoutDashboard, Users, Bell, LogOut, Upload, X, ChevronRight, Zap, Cloud, Sun, Moon } from 'lucide-react';
 
 interface SidebarProps {
   activePage: string;
@@ -21,8 +21,32 @@ export default function Sidebar({ activePage, onPageChange }: SidebarProps) {
   const { currentUser, logout, opsData } = useData();
   const [isPinned, setIsPinned] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isLightMode, setIsLightMode] = useState(false);
   
   const collapsed = !isPinned && !isHovered;
+
+  useEffect(() => {
+    // Check local storage for theme preference on mount
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      setIsLightMode(true);
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    setIsLightMode(!isLightMode);
+    if (!isLightMode) {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.documentElement.classList.remove('light');
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    }
+  };
 
   return (
     <aside 
@@ -33,13 +57,13 @@ export default function Sidebar({ activePage, onPageChange }: SidebarProps) {
     >
       {/* Header */}
       <div className="p-4 flex items-center gap-3 border-b border-[var(--border-color)]">
-        <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+        <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 bg-white overflow-hidden p-[2px]"
           style={{ background: 'var(--gradient-blue)' }}>
-          <Zap className="w-5 h-5 text-white" />
+          <img src="https://careerhub.huflit.edu.vn/wp-content/publicmedia/2024/12/Logo-GHN.jpg" alt="GHN Logo" className="w-full h-full object-contain rounded-lg" />
         </div>
         {!collapsed && (
           <div className="min-w-0">
-            <h1 className="text-sm font-bold text-white truncate">NTB Ops</h1>
+            <h1 className="text-sm font-bold text-[var(--accent-blue)] truncate">NTB Ops</h1>
             <p className="text-[10px] text-[var(--text-muted)]">Command Center</p>
           </div>
         )}
@@ -69,7 +93,7 @@ export default function Sidebar({ activePage, onPageChange }: SidebarProps) {
 
       {/* Data info */}
       {!collapsed && opsData.length > 0 && (
-        <div className="mx-3 mb-3 p-3 rounded-xl bg-[rgba(59,130,246,0.08)] border border-[rgba(59,130,246,0.2)]">
+        <div className="mx-3 mb-3 p-3 rounded-xl bg-[rgba(242,101,34,0.08)] border border-[rgba(242,101,34,0.2)]">
           <p className="text-[10px] uppercase tracking-wider text-[var(--accent-blue)] font-semibold mb-1">Dữ liệu</p>
           <p className="text-xs text-[var(--text-secondary)]">{opsData.length.toLocaleString()} records loaded</p>
         </div>
@@ -88,9 +112,14 @@ export default function Sidebar({ activePage, onPageChange }: SidebarProps) {
             </div>
           )}
           {!collapsed && (
-            <button onClick={logout} className="p-1.5 rounded-lg hover:bg-[var(--bg-card)] transition-colors" title="Đăng xuất">
-              <LogOut className="w-4 h-4 text-[var(--text-muted)]" />
-            </button>
+            <div className="flex gap-1">
+              <button onClick={toggleTheme} className="p-1.5 rounded-lg hover:bg-[var(--bg-card)] transition-colors" title={isLightMode ? "Chuyển sang chế độ Tối" : "Chuyển sang chế độ Sáng"}>
+                {isLightMode ? <Moon className="w-4 h-4 text-[var(--text-muted)]" /> : <Sun className="w-4 h-4 text-[var(--text-muted)]" />}
+              </button>
+              <button onClick={logout} className="p-1.5 rounded-lg hover:bg-[var(--bg-card)] transition-colors" title="Đăng xuất">
+                <LogOut className="w-4 h-4 text-[var(--text-muted)]" />
+              </button>
+            </div>
           )}
         </div>
       </div>

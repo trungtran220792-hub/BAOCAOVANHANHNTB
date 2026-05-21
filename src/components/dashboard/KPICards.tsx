@@ -75,9 +75,9 @@ export default function KPICards({ kpi }: KPICardsProps) {
             <div className="flex items-start justify-between mb-3">
               <div>
                 <p className="text-xs text-[var(--text-muted)] font-medium uppercase tracking-wider">{card.label}</p>
-                <p className="text-2xl font-bold mt-1 text-white">{card.value}</p>
+                <p className="text-2xl font-bold mt-1 text-[var(--text-primary)]">{card.value}</p>
               </div>
-              <div className="p-2 rounded-xl" style={{ background: `rgba(${card.accent === 'blue' ? '59,130,246' : card.accent === 'emerald' ? '16,185,129' : card.accent === 'amber' ? '245,158,11' : '244,63,94'}, 0.1)` }}>
+              <div className="p-2 rounded-xl" style={{ background: `rgba(${card.accent === 'blue' ? '242,101,34' : card.accent === 'emerald' ? '16,185,129' : card.accent === 'amber' ? '245,158,11' : '244,63,94'}, 0.1)` }}>
                 <card.icon className="w-5 h-5" style={{ color: `var(--accent-${card.accent})` }} />
               </div>
             </div>

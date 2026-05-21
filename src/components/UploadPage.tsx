@@ -62,7 +62,7 @@ export default function UploadPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-8 fade-in">
       <div>
-        <h1 className="text-xl font-bold text-white">Upload Dữ Liệu</h1>
+        <h1 className="text-xl font-bold text-[var(--accent-blue)]">Upload Dữ Liệu</h1>
         <p className="text-xs text-[var(--text-muted)] mt-1">Kéo thả hoặc chọn file CSV từ Google Sheets / Looker</p>
       </div>
 
@@ -76,7 +76,7 @@ export default function UploadPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Operations CSV */}
         <div
-          className={`glass-card p-8 text-center cursor-pointer transition-all duration-300 ${dragOverOps ? 'border-[var(--accent-blue)] bg-[rgba(59,130,246,0.05)]' : ''}`}
+          className={`glass-card p-8 text-center cursor-pointer transition-all duration-300 ${dragOverOps ? 'border-[var(--accent-blue)] bg-[rgba(242,101,34,0.05)]' : ''}`}
           onDragOver={e => { e.preventDefault(); setDragOverOps(true); }}
           onDragLeave={() => setDragOverOps(false)}
           onDrop={e => handleDrop(e, 'ops')}
@@ -84,7 +84,7 @@ export default function UploadPage() {
         >
           <input id="ops-input" type="file" accept=".csv" className="hidden" onChange={e => handleInput(e, 'ops')} />
           <div className="w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center"
-            style={{ background: opsData.length > 0 ? 'rgba(16,185,129,0.1)' : 'rgba(59,130,246,0.1)' }}>
+            style={{ background: opsData.length > 0 ? 'rgba(16,185,129,0.1)' : 'rgba(242,101,34,0.1)' }}>
             {uploadingState === 'ops' ? (
               <div className="w-7 h-7 border-2 border-t-transparent border-[var(--accent-blue)] rounded-full animate-spin" />
             ) : opsData.length > 0 ? (
