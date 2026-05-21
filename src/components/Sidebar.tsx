@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useData } from '@/lib/data-store';
-import { LayoutDashboard, Users, Bell, Settings, LogOut, Upload, Menu, X, ChevronRight, Zap } from 'lucide-react';
+import { LayoutDashboard, Users, Bell, LogOut, Upload, X, ChevronRight, Zap, Cloud } from 'lucide-react';
 
 interface SidebarProps {
   activePage: string;
@@ -13,7 +13,8 @@ const navItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'nhan-su', label: 'Nhân Sự', icon: Users },
   { id: 'canh-bao', label: 'Cảnh Báo', icon: Bell },
-  { id: 'upload', label: 'Upload Dữ Liệu', icon: Upload },
+  { id: 'sync', label: 'Đồng Bộ Dữ Liệu', icon: Cloud },
+  { id: 'upload', label: 'Upload CSV', icon: Upload },
 ];
 
 export default function Sidebar({ activePage, onPageChange }: SidebarProps) {

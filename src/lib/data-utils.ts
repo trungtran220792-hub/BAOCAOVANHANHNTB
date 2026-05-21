@@ -1,6 +1,6 @@
 import Papa from 'papaparse';
 import { parse, startOfWeek, format, isValid } from 'date-fns';
-import type { OperationsRecord, WorkforceRecord, CargoType, AggregatedData, TimeSeriesPoint, StationRanking, KPISummary } from '@/types';
+import type { OperationsRecord, WorkforceRecord, HistoricalDataRecord, CargoType, AggregatedData, TimeSeriesPoint, StationRanking, KPISummary } from '@/types';
 
 // Strip BOM and normalize CSV text
 function cleanCSV(text: string): string {
@@ -168,6 +168,25 @@ export function parseWorkforceCSV(csvText: string): WorkforceRecord[] {
     seniority: row['Thâm niên'] || '',
     spTeam: (row['SP Team?'] || '') === 'true',
   })).filter(r => r.id || r.name);
+}
+
+// Parse historical data CSV
+export function parseHistoricalCSV(csvText: string): HistoricalDataRecord[] {
+  const cleaned = cleanCSV(csvText);
+  const result = Papa.parse<Record<string, string>>(cleaned, {
+    header: true,
+    skipEmptyLines: true,
+    transformHeader: (h: string) => h.replace(/^\uFEFF/, '').trim(),
+  });
+
+  return result.data.map(row => {
+    return {
+      manager: getColumn(row, 'manager'),
+      station: getColumn(row, 'station'),
+      month: getColumn(row, 'time'),
+      volume: parseIntSafe(getColumn(row, 'volume')),
+    };
+  }).filter(r => r.station && r.volume > 0);
 }
 
 // Get unique values for filters

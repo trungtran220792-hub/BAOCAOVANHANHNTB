@@ -8,6 +8,7 @@ import DashboardPage from '@/components/DashboardPage';
 import HRPage from '@/components/HRPage';
 import AlertsPage from '@/components/AlertsPage';
 import UploadPage from '@/components/UploadPage';
+import SyncPage from '@/components/SyncPage';
 
 export default function Home() {
   const { isAuthenticated } = useData();
@@ -22,6 +23,7 @@ export default function Home() {
       case 'dashboard': return <DashboardPage />;
       case 'nhan-su': return <HRPage />;
       case 'canh-bao': return <AlertsPage />;
+      case 'sync': return <SyncPage />;
       case 'upload': return <UploadPage />;
       default: return <DashboardPage />;
     }

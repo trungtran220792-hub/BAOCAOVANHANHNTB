@@ -1,16 +1,18 @@
 'use client';
 
 import React, { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
-import type { OperationsRecord, WorkforceRecord } from '@/types';
-import { parseOperationsCSV, parseWorkforceCSV } from '@/lib/data-utils';
+import type { OperationsRecord, WorkforceRecord, HistoricalDataRecord } from '@/types';
+import { parseOperationsCSV, parseWorkforceCSV, parseHistoricalCSV } from '@/lib/data-utils';
 
 interface DataStore {
   opsData: OperationsRecord[];
   hrData: WorkforceRecord[];
+  historicalData: HistoricalDataRecord[];
   isLoading: boolean;
   error: string | null;
   loadOpsData: (csvText: string) => void;
   loadHrData: (csvText: string) => void;
+  loadHistoricalData: (csvText: string) => void;
   isAuthenticated: boolean;
   currentUser: { id: string; name: string; role: string } | null;
   login: (employeeId: string) => boolean;
@@ -22,6 +24,7 @@ const DataContext = createContext<DataStore | null>(null);
 export function DataProvider({ children }: { children: ReactNode }) {
   const [opsData, setOpsData] = useState<OperationsRecord[]>([]);
   const [hrData, setHrData] = useState<WorkforceRecord[]>([]);
+  const [historicalData, setHistoricalData] = useState<HistoricalDataRecord[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -48,6 +51,19 @@ export function DataProvider({ children }: { children: ReactNode }) {
       setHrData(parsed);
     } catch (e) {
       setError('Lỗi đọc dữ liệu nhân sự');
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const loadHistoricalData = useCallback((csvText: string) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const parsed = parseHistoricalCSV(csvText);
+      setHistoricalData(parsed);
+    } catch (e) {
+      setError('Lỗi đọc dữ liệu lịch sử');
     } finally {
       setIsLoading(false);
     }
@@ -85,7 +101,11 @@ export function DataProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <DataContext.Provider value={{ opsData, hrData, isLoading, error, loadOpsData, loadHrData, isAuthenticated, currentUser, login, logout }}>
+    <DataContext.Provider value={{ 
+      opsData, hrData, historicalData, isLoading, error, 
+      loadOpsData, loadHrData, loadHistoricalData, 
+      isAuthenticated, currentUser, login, logout 
+    }}>
       {children}
     </DataContext.Provider>
   );

@@ -14,6 +14,14 @@ export interface OperationsRecord {
 
 export type CargoType = 'Hàng Mới Ca 1' | 'Hàng Mới Ca 2' | 'Hàng Tồn';
 
+// Historical Operations Data (Monthly)
+export interface HistoricalDataRecord {
+  manager: string;
+  station: string;
+  month: string; // YYYY/MM
+  volume: number;
+}
+
 // Workforce Data (from HR CSV)
 export interface WorkforceRecord {
   id: string;              // Mã NV

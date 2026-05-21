@@ -42,3 +42,6 @@ next-env.d.ts
 
 .vercel
 .env*.local
+
+# Google Service Account credentials (sensitive - never commit)
+credentials.json
